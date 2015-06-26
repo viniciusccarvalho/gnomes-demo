@@ -1,0 +1,10 @@
+---
+applications:
+- name: gnomes-api
+  host: gnomes-api
+  path: build/libs/api-1.0.0.BUILD-SNAPSHOT.jar
+  memory: 512M
+  instances: 1
+  services:
+    - registry
+    - hystrix

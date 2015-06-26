@@ -1,0 +1,28 @@
+---
+applications:
+
+- name: gnomes-data
+  host: gnomes
+  memory: 512M
+  instances: 1
+  path: data-services/build/libs/data-services-1.0.0.BUILD-SNAPSHOT.jar
+  services:
+    - registry
+
+- name: gnomes-aggregation
+  host: aggregation
+  memory: 512M
+  path: aggregation/build/libs/aggregation-1.0.0.BUILD-SNAPSHOT.jar
+  instances: 1
+  services:
+    - registry
+    - hystrix
+
+- name: gnomes-api
+  host: gnomes-api
+  memory: 512M
+  path: api/build/libs/api-1.0.0.BUILD-SNAPSHOT.jar
+  instances: 1
+  services:
+    - registry
+    - hystrix

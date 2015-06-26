@@ -1,0 +1,9 @@
+---
+applications:
+- name: gnomes-aggregation
+  host: aggregation
+  memory: 512M
+  instances: 1
+  services:
+    - registry
+    - hystrix
