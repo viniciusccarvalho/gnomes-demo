@@ -140,3 +140,36 @@ i) Combines two observables from the results of the clients into one
 ### Point your browser to the hystrix dashboard:
 
 image::https://cloud.githubusercontent.com/assets/803893/8378863/4b183e76-1bea-11e5-8104-1ce723dd351f.png[dashboard]
+
+### The api endpoint
+
+* Point your browser to the api application:
+
+image::https://cloud.githubusercontent.com/assets/803893/8379171/31d9c9c8-1bec-11e5-8417-7d521bb3535c.png[gnomes app]
+
+The application charts the data from aggregation at a 5 requests/second rate
+
+* Point your browser to hystrix again to show the metrics
+
+image::https://cloud.githubusercontent.com/assets/803893/8379187/4730a03a-1bec-11e5-9315-fa3552ad9879.png[hystrix 2]
+
+### Stop the gnomes-data application:
+
+`cf stop gnomes-data`
+
+image::https://cloud.githubusercontent.com/assets/803893/8379283/f4200dd0-1bec-11e5-9fd8-daf91000fc57.png[app down]
+
+You can demonstrate the resilience of your app, instead of the client throwing an error due a service being down, it actually
+plots the last read value from the service (fallback method)
+
+### Show that hystrix is on open state
+
+image::https://cloud.githubusercontent.com/assets/803893/8379204/67fa8e0c-1bec-11e5-8bc7-42b55fda7d5f.png[hystrix down]
+
+### Restart your gnomes-data
+
+`cf start gnomes-data`
+
+* When you go back to the api you will see that after a few seconds the data flow is restored.
+
+image::https://cloud.githubusercontent.com/assets/803893/8379223/7a25a594-1bec-11e5-8857-1d4b44993186.png[app back]
