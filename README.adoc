@@ -139,4 +139,4 @@ i) Combines two observables from the results of the clients into one
 
 ### Point your browser to the hystrix dashboard:
 
-image::https://cloud.githubusercontent.com/assets/803893/8378863/4b183e76-1bea-11e5-8104-1ce723dd351f.png
+image::https://cloud.githubusercontent.com/assets/803893/8378863/4b183e76-1bea-11e5-8104-1ce723dd351f.png[dashboard]
