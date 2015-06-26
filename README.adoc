@@ -75,15 +75,15 @@ gnomes: 15.65027543673633
 ```
 
 The clients:
-
-```java
+[source, java]
+----
 @Component
 public class GnomesClient {
 
     @Autowired
     private RestTemplate template;
 
-    private Double lastValue = 0.0;
+    private Double lastValue = 0.0; (1)
 
    @HystrixCommand(fallbackMethod = "defaultValue",
             commandProperties = {
@@ -95,7 +95,7 @@ public class GnomesClient {
        return new ObservableResult<Map<String, Double>>() {
            @Override
            public Map<String, Double> invoke() {
-               Map<String,Double> response = template.getForObject("http://gnomes-data/data",Map.class, Collections.singletonMap("base",10));
+               Map<String,Double> response = template.getForObject("http://gnomes-data/data",Map.class, Collections.singletonMap("base",10)); (2)
                Double data = response.get("data");
                lastValue = data;
                return Collections.singletonMap("gnomes",data);
@@ -110,6 +110,33 @@ public class GnomesClient {
     }
 
 }
+----
+i) This acts as a "cache" that fallback method will always return the last read value when the circuit opens
+ii) Note the usage of ribbon here, no call to an URI but instead a service id on eureka
 
-```
+The aggregation service:
+[source, java]
+----
+@Component
+public class AggregationService {
 
+    @Autowired
+    private GnomesClient gnomesClient;
+    @Autowired
+    private ProfitClient profitClient;
+
+    public Observable<Map<String,Double>> aggregate(){ (1)
+        return Observable.zip(gnomesClient.gnomesData(), profitClient.profitData(), (d1,d2) -> {
+            Map<String,Double> zip = new HashMap<String, Double>();
+            zip.putAll(d1);
+            zip.putAll(d2);
+            return zip;
+        });
+    }
+}
+----
+i) Combines two observables from the results of the clients into one
+
+### Point your browser to the hystrix dashboard:
+
+image::https://cloud.githubusercontent.com/assets/803893/8378863/4b183e76-1bea-11e5-8104-1ce723dd351f.png
